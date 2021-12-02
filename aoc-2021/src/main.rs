@@ -15,6 +15,8 @@ fn main() {
         match solution.as_str() {
             "1A" => solution_1a(),
             "1B" => solution_1b(),
+            "2A" => solution_2a(),
+            "2B" => solution_2b(),
             _ => println!("NOT SUPPORTED")
         };
     }
@@ -64,6 +66,69 @@ fn solution_1b() {
     } // Otherwise, not enough for a single window, answer would be 0
 
     println!("Total number of increasing windows: {}", increasing_measurement_counter);
+}
+
+// Day 2 - part 1
+fn solution_2a() {
+    println!("Solving 2A");
+
+    //let file_location = "problem_2_sample.txt";
+    let file_location = "problem_2_input.txt";
+    let problem_input_string = get_problem_input(file_location);
+    let split_input = problem_input_string.trim().split('\n').collect::<Vec<&str>>();
+
+    let mut horizontal_position = 0;
+    let mut vertical_position = 0;
+
+    for command_str in split_input {
+        let command_vec = command_str.split(' ').collect::<Vec<&str>>();
+        let command = command_vec.get(0).expect("Couldn't parse command").to_string();
+        let distance = command_vec.get(1).expect("Couldn't parse distance").parse::<i32>().unwrap();
+
+        match command.as_str() {
+            "forward" => horizontal_position += distance,
+            "down" => vertical_position += distance,
+            "up" => vertical_position -= distance,
+            _ => ()
+        };
+
+        println!("{} {}", command, distance);
+    }
+
+    println!("Combined positions: {}", horizontal_position*vertical_position);
+}
+
+// Day 2 - part 2
+fn solution_2b() {
+    println!("Solving 2B");
+
+    //let file_location = "problem_2_sample.txt";
+    let file_location = "problem_2_input.txt";
+    let problem_input_string = get_problem_input(file_location);
+
+    let split_input = problem_input_string.trim().split('\n').collect::<Vec<&str>>();
+
+    let mut horizontal_position = 0;
+    let mut vertical_position = 0;
+    let mut aim = 0;
+
+    for command_str in split_input {
+        let command_vec = command_str.split(' ').collect::<Vec<&str>>();
+        let command = command_vec.get(0).expect("Couldn't parse command").to_string();
+        let distance = command_vec.get(1).expect("Couldn't parse distance").parse::<i32>().unwrap();
+
+        match command.as_str() {
+            "forward" => {
+                horizontal_position += distance;
+                vertical_position += distance * aim;
+            },
+            "down" => aim += distance,
+            "up" => aim -= distance,
+            _ => ()
+        };
+    }
+
+    println!("Combined positions: {}", horizontal_position*vertical_position);
 }
 
 // Helper function to get the problem input
